@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,12 +36,15 @@ public class UserController {
     @PostMapping("/signin")
     public ResponseEntity<String> authenticateAndGetToken(@RequestBody SignInRequest signInRequest) {
         try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
+            Authentication authentication = authenticationManager.
+                    authenticate(new UsernamePasswordAuthenticationToken
+                            (signInRequest.getUsername(), signInRequest.getPassword()));
             if (authentication.isAuthenticated()) {
                 Object principal = authentication.getPrincipal();
                 UserDetails userDetails = (UserDetails) principal;
                 Optional<User> user = userRepository.findByEmail(userDetails.getUsername());
-                String token = jwtService.generateToken(signInRequest.getUsername(), user.get().getRole().name());
+                String token = jwtService.generateToken
+                        (signInRequest.getUsername(), user.get().getRole().name());
                 System.out.println(user.get().getRole());
                 return ResponseEntity.status(HttpStatus.OK).body(token);
             } else {
@@ -59,5 +63,10 @@ public class UserController {
     @PostMapping( "/signup")
     public boolean signup(@RequestBody SignUpRequest signUpRequest){
         return userService.addUser(signUpRequest);
+    }
+
+    @GetMapping("/users")
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
     }
 }
