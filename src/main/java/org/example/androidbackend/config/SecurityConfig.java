@@ -47,7 +47,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers("/api/user/**", "/api/send/**", "/api/valid/**")
+                        req.requestMatchers("/api/user/**", "/api/genre/**", "/api/valid/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

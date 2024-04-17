@@ -21,7 +21,7 @@ public class Auditorium implements Serializable {
     private int id;
 
     private String name;
-    private int seats_no;
+    private int seats_no; //number of seats
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "auditorium", orphanRemoval = true)
     @JsonIgnore
