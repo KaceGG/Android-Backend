@@ -1,4 +1,4 @@
-package org.example.androidbackend.repository;
+package org.example.androidbackend.repositories;
 
 import org.example.androidbackend.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;

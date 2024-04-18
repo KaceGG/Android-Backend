@@ -1,15 +1,14 @@
 package org.example.androidbackend.controllers;
 
-import org.example.androidbackend.models.Genre;
 import org.example.androidbackend.models.Movie;
-import org.example.androidbackend.repository.MovieRepository;
-import org.example.androidbackend.request.MovieRequest;
+import org.example.androidbackend.repositories.MovieRepository;
+import org.example.androidbackend.requests.MovieRequest;
 import org.example.androidbackend.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/movie")
@@ -20,13 +19,23 @@ public class MovieController {
     @Autowired
     private MovieRepository movieRepository;
 
+//    @PostMapping("/add")
+//    public boolean addMovie(@RequestBody MovieRequest movieRequest) {
+//        return movieService.addMovie(movieRequest);
+//    }
+
     @PostMapping("/add")
-    public boolean addMovie(@RequestBody MovieRequest movieRequest) {
-        return movieService.addMovie(movieRequest);
+    public ResponseEntity<String> addMovie(@RequestBody MovieRequest movieRequest) {
+        boolean result = movieService.addMovie(movieRequest);
+        if (result) {
+            return ResponseEntity.ok("Movie added successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to add movie.");
+        }
     }
 
     @GetMapping("/all")
-    public Set<Genre> getAllGenreToMovie(@RequestParam(value = "movieId") Integer id){
-        return movieRepository.findGenresByMovieId(id);
+    public List<Movie> getAllMovie(){
+        return movieRepository.findAll();
     }
 }

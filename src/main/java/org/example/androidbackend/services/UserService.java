@@ -1,7 +1,6 @@
 package org.example.androidbackend.services;
 
-import org.example.androidbackend.request.SignUpRequest;
-import org.springframework.stereotype.Service;
+import org.example.androidbackend.requests.SignUpRequest;
 
 
 public interface UserService {

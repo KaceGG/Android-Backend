@@ -1,4 +1,4 @@
-package org.example.androidbackend.request;
+package org.example.androidbackend.requests;
 
 import lombok.Data;
 
@@ -14,5 +14,5 @@ public class MovieRequest {
     private int duration;
     private float rating;
 
-    private List<Long> id;
+    private List<Long> genreIds;
 }

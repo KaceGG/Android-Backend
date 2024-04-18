@@ -1,9 +1,9 @@
 package org.example.androidbackend.controllers;
 
 import org.example.androidbackend.models.User;
-import org.example.androidbackend.repository.UserRepository;
-import org.example.androidbackend.request.SignInRequest;
-import org.example.androidbackend.request.SignUpRequest;
+import org.example.androidbackend.repositories.UserRepository;
+import org.example.androidbackend.requests.SignInRequest;
+import org.example.androidbackend.requests.SignUpRequest;
 import org.example.androidbackend.services.JwtService;
 import org.example.androidbackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,8 @@ public class UserController {
                 Object principal = authentication.getPrincipal();
                 UserDetails userDetails = (UserDetails) principal;
                 Optional<User> user = userRepository.findByEmail(userDetails.getUsername());
-                String token = jwtService.generateToken
+                String token;
+                token = jwtService.generateToken
                         (signInRequest.getUsername(), user.get().getRole().name());
                 System.out.println(user.get().getRole());
                 return ResponseEntity.status(HttpStatus.OK).body(token);

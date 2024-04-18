@@ -1,12 +1,13 @@
 package org.example.androidbackend.controllers;
 
 import org.example.androidbackend.models.Genre;
-import org.example.androidbackend.repository.GenreRepository;
+import org.example.androidbackend.repositories.GenreRepository;
 import org.example.androidbackend.services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/genre")
@@ -35,8 +36,7 @@ public class GenreController {
     }
     
     @GetMapping("/{id}")
-    public Genre getGenreById(@PathVariable int id) {
+    public Optional<Genre> getGenreById(@PathVariable int id) {
         return genreRepository.findById(id);
     }
-
 }

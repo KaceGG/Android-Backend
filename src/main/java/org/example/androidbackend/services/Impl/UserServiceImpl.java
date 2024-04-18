@@ -2,8 +2,8 @@ package org.example.androidbackend.services.Impl;
 
 import org.example.androidbackend.models.Role;
 import org.example.androidbackend.models.User;
-import org.example.androidbackend.repository.UserRepository;
-import org.example.androidbackend.request.SignUpRequest;
+import org.example.androidbackend.repositories.UserRepository;
+import org.example.androidbackend.requests.SignUpRequest;
 import org.example.androidbackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
