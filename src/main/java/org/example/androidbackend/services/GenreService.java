@@ -7,4 +7,5 @@ import java.util.List;
 public interface GenreService {
     boolean addGenre(String genreName);
     boolean updateGenre(int id, String genreName);
+
 }

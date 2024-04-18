@@ -19,13 +19,13 @@ public class GenreController {
     private GenreRepository genreRepository;
 
     @PostMapping("/add")
-    public boolean addGenre(@RequestParam(value = "genreName") String genreName) {
+    public boolean addGenre(@RequestParam(value = "name") String genreName) {
         return genreService.addGenre(genreName);
     }
 
     @PostMapping("/update")
     public boolean updateGenre(@RequestParam(value = "id") int genreId,
-                               @RequestParam(value = "genreName") String genreName) {
+                               @RequestParam(value = "name") String genreName) {
         return genreService.updateGenre(genreId, genreName);
     }
 
@@ -33,4 +33,10 @@ public class GenreController {
     public List<Genre> getAllGenres() {
         return genreRepository.findAll();
     }
+    
+    @GetMapping("/{id}")
+    public Genre getGenreById(@PathVariable int id) {
+        return genreRepository.findById(id);
+    }
+
 }

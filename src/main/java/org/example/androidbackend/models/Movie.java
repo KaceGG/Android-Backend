@@ -22,7 +22,7 @@ public class Movie implements Serializable {
 
     private String title;
     private String description;
-    private String image;
+//    private String image;
     private String director;
     private String cast;
     private int duration;
