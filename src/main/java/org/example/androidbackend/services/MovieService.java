@@ -10,5 +10,5 @@ import java.util.List;
 public interface MovieService {
     boolean addMovie(MovieRequest movieRequest);
 
-    List<MovieDTO> getAllMovieDTO();
+    List<MovieDTO> getAllMovie();
 }

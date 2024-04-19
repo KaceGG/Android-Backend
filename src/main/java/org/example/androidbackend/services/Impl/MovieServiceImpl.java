@@ -43,17 +43,18 @@ public class MovieServiceImpl implements MovieService {
         movie.setRating(movieRequest.getRating());
 
         Set<Genre> genres = new HashSet<>();
-        for(Long id : movieRequest.getGenreIds()){
+        for (Long id : movieRequest.getGenreIds()) {
             Genre genre = genreRepository.findById(id).orElse(null);
             genres.add(genre);
         }
         movie.setGenres(genres);
+
         movieRepository.save(movie);
         return true;
     }
 
     @Override
-    public List<MovieDTO> getAllMovieDTO() {
+    public List<MovieDTO> getAllMovie() {
         List<Movie> movieList = movieRepository.findAll();
         return movieList.stream().map(movie -> {
             MovieDTO movieDTO = new MovieDTO();
@@ -64,12 +65,23 @@ public class MovieServiceImpl implements MovieService {
             movieDTO.setCast(movie.getCast());
             movieDTO.setDuration(movie.getDuration());
             movieDTO.setRating(movie.getRating());
-            movieDTO.setGenres(movie.getGenres().stream().map(genre -> {
-                GenreDTO genreDTO = new GenreDTO();
-                genreDTO.setId(genre.getId());
-                genreDTO.setName(genre.getName());
-                return genreDTO;
-            }).collect(Collectors.toSet()));
+
+//            movieDTO.setGenres(movie.getGenres().stream().map(genre -> {
+//                GenreDTO genreDTO = new GenreDTO();
+//                genreDTO.setId(genre.getId());
+//                genreDTO.setName(genre.getName());
+//                return genreDTO;
+//            }).collect(Collectors.toSet()));
+            Set<GenreDTO> genres = genreRepository.findGenresByMoviesId(movie.getId()).stream().map(
+                    genre -> {
+                        GenreDTO genreDTO = new GenreDTO();
+                        genreDTO.setId(genre.getId());
+                        genreDTO.setName(genre.getName());
+                        return genreDTO;
+                    }
+            ).collect(Collectors.toSet());
+            movieDTO.setGenres(genres);
+
             return movieDTO;
         }).collect(Collectors.toList());
     }
