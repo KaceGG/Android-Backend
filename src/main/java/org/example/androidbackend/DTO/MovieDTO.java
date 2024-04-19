@@ -8,6 +8,7 @@ import java.util.Set;
 
 @Data
 public class MovieDTO {
+    private int id;
     private String title;
     private String description;
 //    private String image;
@@ -16,5 +17,5 @@ public class MovieDTO {
     private int duration;
     private float rating;
 
-    private Set<Genre> genres;
+    private Set<GenreDTO> genres;
 }

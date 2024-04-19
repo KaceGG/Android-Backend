@@ -1,5 +1,7 @@
 package org.example.androidbackend.services.Impl;
 
+import org.example.androidbackend.DTO.GenreDTO;
+import org.example.androidbackend.DTO.MovieDTO;
 import org.example.androidbackend.models.Genre;
 import org.example.androidbackend.models.Movie;
 import org.example.androidbackend.repositories.GenreRepository;
@@ -12,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -30,10 +34,6 @@ public class MovieServiceImpl implements MovieService {
         if (movieRepository.existsByTitle(movieRequest.getTitle())) {
             return false;
         }
-        if (movieRequest.getGenreIds() == null || movieRequest.getGenreIds().isEmpty()) {
-            logger.error("GenreIds list is null or empty. Cannot add movie without genres.");
-            return false; // Trả về false và ghi log lỗi
-        }
         Movie movie = new Movie();
         movie.setTitle(movieRequest.getTitle());
         movie.setDescription(movieRequest.getDescription());
@@ -43,18 +43,34 @@ public class MovieServiceImpl implements MovieService {
         movie.setRating(movieRequest.getRating());
 
         Set<Genre> genres = new HashSet<>();
-        for (Long id : movieRequest.getGenreIds()) {
-            Optional<Genre> optionalGenre = genreRepository.findById(id);
-            if (optionalGenre.isPresent()) {
-                Genre genre = optionalGenre.get();
-                genres.add(genre);
-            } else {
-                logger.error("Genre with id " + id + " not found.");
-                return false;
-            }
-            movie.setGenres(genres);
-            movieRepository.save(movie);
+        for(Long id : movieRequest.getGenreIds()){
+            Genre genre = genreRepository.findById(id).orElse(null);
+            genres.add(genre);
         }
+        movie.setGenres(genres);
+        movieRepository.save(movie);
         return true;
+    }
+
+    @Override
+    public List<MovieDTO> getAllMovieDTO() {
+        List<Movie> movieList = movieRepository.findAll();
+        return movieList.stream().map(movie -> {
+            MovieDTO movieDTO = new MovieDTO();
+            movieDTO.setId(movie.getId());
+            movieDTO.setTitle(movie.getTitle());
+            movieDTO.setDescription(movie.getDescription());
+            movieDTO.setDirector(movie.getDirector());
+            movieDTO.setCast(movie.getCast());
+            movieDTO.setDuration(movie.getDuration());
+            movieDTO.setRating(movie.getRating());
+            movieDTO.setGenres(movie.getGenres().stream().map(genre -> {
+                GenreDTO genreDTO = new GenreDTO();
+                genreDTO.setId(genre.getId());
+                genreDTO.setName(genre.getName());
+                return genreDTO;
+            }).collect(Collectors.toSet()));
+            return movieDTO;
+        }).collect(Collectors.toList());
     }
 }

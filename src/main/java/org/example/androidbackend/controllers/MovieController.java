@@ -1,5 +1,6 @@
 package org.example.androidbackend.controllers;
 
+import org.example.androidbackend.DTO.MovieDTO;
 import org.example.androidbackend.models.Movie;
 import org.example.androidbackend.repositories.MovieRepository;
 import org.example.androidbackend.requests.MovieRequest;
@@ -25,17 +26,12 @@ public class MovieController {
 //    }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addMovie(@RequestBody MovieRequest movieRequest) {
-        boolean result = movieService.addMovie(movieRequest);
-        if (result) {
-            return ResponseEntity.ok("Movie added successfully.");
-        } else {
-            return ResponseEntity.badRequest().body("Failed to add movie.");
-        }
+    public boolean addMovie(@RequestBody MovieRequest movieRequest) {
+        return movieService.addMovie(movieRequest);
     }
 
     @GetMapping("/all")
-    public List<Movie> getAllMovie(){
-        return movieRepository.findAll();
+    public List<MovieDTO> getAllMovie(){
+        return movieService.getAllMovieDTO();
     }
 }
