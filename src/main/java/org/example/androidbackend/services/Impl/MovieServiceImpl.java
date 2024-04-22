@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,17 +60,12 @@ public class MovieServiceImpl implements MovieService {
             movieDTO.setId(movie.getId());
             movieDTO.setTitle(movie.getTitle());
             movieDTO.setDescription(movie.getDescription());
+            movieDTO.setImage(movie.getImage());
             movieDTO.setDirector(movie.getDirector());
             movieDTO.setCast(movie.getCast());
             movieDTO.setDuration(movie.getDuration());
             movieDTO.setRating(movie.getRating());
 
-//            movieDTO.setGenres(movie.getGenres().stream().map(genre -> {
-//                GenreDTO genreDTO = new GenreDTO();
-//                genreDTO.setId(genre.getId());
-//                genreDTO.setName(genre.getName());
-//                return genreDTO;
-//            }).collect(Collectors.toSet()));
             Set<GenreDTO> genres = genreRepository.findGenresByMoviesId(movie.getId()).stream().map(
                     genre -> {
                         GenreDTO genreDTO = new GenreDTO();
@@ -81,8 +75,8 @@ public class MovieServiceImpl implements MovieService {
                     }
             ).collect(Collectors.toSet());
             movieDTO.setGenres(genres);
-
             return movieDTO;
+
         }).collect(Collectors.toList());
     }
 }
