@@ -11,7 +11,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
@@ -27,13 +29,25 @@ public class MovieController {
     @Autowired
     private MovieRepository movieRepository;
 
+//    @PostMapping("/add")
+//    public boolean addMovie(@RequestBody MovieRequest movieRequest) {
+//        return movieService.addMovie(movieRequest);
+//    }
+
     @PostMapping("/add")
-    public boolean addMovie(@RequestBody MovieRequest movieRequest) {
-        return movieService.addMovie(movieRequest);
+    public boolean addMovie(@RequestParam(value = "title") String title,
+                            @RequestParam(value = "description") String description,
+                            @RequestPart(value = "image") MultipartFile image,
+                            @RequestParam(value = "director") String director,
+                            @RequestParam(value = "cast") String cast,
+                            @RequestParam(value = "duration") int duration,
+                            @RequestParam(value = "rating") float rating,
+                            @RequestParam(value = "genreIds") List<Long> genreIds) throws IOException {
+        return movieService.addMovie(title, description, image, director, cast, duration, rating, genreIds);
     }
 
     @GetMapping("/all")
-    public List<MovieDTO> getAllMovie(){
+    public List<MovieDTO> getAllMovie() {
         return movieService.getAllMovie();
     }
 
@@ -44,7 +58,7 @@ public class MovieController {
     }
 
     @GetMapping("/{genreId}")
-    public List<Movie> getMovieToGenres(@PathVariable int genreId){
+    public List<Movie> getMovieToGenres(@PathVariable int genreId) {
         return movieRepository.findMoviesByGenresId(genreId);
     }
 }

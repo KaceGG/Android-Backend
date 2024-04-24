@@ -7,6 +7,7 @@ import org.example.androidbackend.models.Movie;
 import org.example.androidbackend.repositories.GenreRepository;
 import org.example.androidbackend.repositories.MovieRepository;
 import org.example.androidbackend.requests.MovieRequest;
+import org.example.androidbackend.services.CloudService;
 import org.example.androidbackend.services.FileStorageService;
 import org.example.androidbackend.services.MovieService;
 import org.slf4j.Logger;
@@ -27,11 +28,10 @@ public class MovieServiceImpl implements MovieService {
     private MovieRepository movieRepository;
     @Autowired
     private GenreRepository genreRepository;
-    private FileStorageService fileStorageService;
+    @Autowired
+    private CloudService cloudService;
 
-    private static final Logger logger = LoggerFactory.getLogger(MovieServiceImpl.class);
-
-//    @Override
+    //    @Override
 //    public boolean addMovie(MovieRequest movieRequest) {
 //        if (movieRepository.existsByTitle(movieRequest.getTitle())) {
 //            return false;
@@ -44,15 +44,6 @@ public class MovieServiceImpl implements MovieService {
 //        movie.setDuration(movieRequest.getDuration());
 //        movie.setRating(movieRequest.getRating());
 //
-//        // Lưu tên tệp ảnh vào đối tượng Movie
-//        String imageName = movieRequest.getImage().getOriginalFilename();
-//        movie.setImage(imageName);
-//        // Thực hiện lưu trữ thực tế tệp ảnh trên máy chủ
-//        MultipartFile imageFile = movieRequest.getImage();
-//        String imagePath = "http://http://localhost:8080/api/movie/image/" + imageName;
-//        fileStorageService.addImage(imageFile, movie.getId(), imageName);
-//        movie.setImage(imagePath); // Cập nhật đường dẫn của ảnh trong đối tượng Movie
-//
 //        Set<Genre> genres = new HashSet<>();
 //        for (Long id : movieRequest.getGenreIds()) {
 //            Genre genre = genreRepository.findById(id).orElse(null);
@@ -63,31 +54,28 @@ public class MovieServiceImpl implements MovieService {
 //        movieRepository.save(movie);
 //        return true;
 //    }
-
     @Override
-    public boolean addMovie(MovieRequest movieRequest) {
-        if (movieRepository.existsByTitle(movieRequest.getTitle())) {
+    public boolean addMovie(String title, String description, MultipartFile image, String director, String cast, int duration, float rating, List<Long> genreIds) throws IOException {
+        if (movieRepository.existsByTitle(title)) {
             return false;
         }
         Movie movie = new Movie();
-        movie.setTitle(movieRequest.getTitle());
-        movie.setDescription(movieRequest.getDescription());
-        movie.setDirector(movieRequest.getDirector());
-        movie.setCast(movieRequest.getCast());
-        movie.setDuration(movieRequest.getDuration());
-        movie.setRating(movieRequest.getRating());
-
+        movie.setTitle(title);
+        movie.setDescription(description);
+        movie.setDirector(director);
+        movie.setCast(cast);
+        movie.setDuration(duration);
+        movie.setRating(rating);
+        movie.setImage(cloudService.uploadImage(image));
         Set<Genre> genres = new HashSet<>();
-        for (Long id : movieRequest.getGenreIds()) {
+        for (Long id : genreIds) {
             Genre genre = genreRepository.findById(id).orElse(null);
             genres.add(genre);
         }
         movie.setGenres(genres);
-
         movieRepository.save(movie);
         return true;
     }
-
 
     @Override
     public List<MovieDTO> getAllMovie() {
