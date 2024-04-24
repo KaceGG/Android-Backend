@@ -26,7 +26,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public boolean updateGenre(int id, String genreName) {
+    public boolean updateGenre(Long id, String genreName) {
         if(genreRepository.existsByName(genreName)){
             return false;
         } else {

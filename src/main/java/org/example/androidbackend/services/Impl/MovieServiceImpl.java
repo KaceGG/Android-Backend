@@ -7,12 +7,15 @@ import org.example.androidbackend.models.Movie;
 import org.example.androidbackend.repositories.GenreRepository;
 import org.example.androidbackend.repositories.MovieRepository;
 import org.example.androidbackend.requests.MovieRequest;
+import org.example.androidbackend.services.FileStorageService;
 import org.example.androidbackend.services.MovieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,11 +25,44 @@ import java.util.stream.Collectors;
 public class MovieServiceImpl implements MovieService {
     @Autowired
     private MovieRepository movieRepository;
-
     @Autowired
     private GenreRepository genreRepository;
+    private FileStorageService fileStorageService;
 
     private static final Logger logger = LoggerFactory.getLogger(MovieServiceImpl.class);
+
+//    @Override
+//    public boolean addMovie(MovieRequest movieRequest) {
+//        if (movieRepository.existsByTitle(movieRequest.getTitle())) {
+//            return false;
+//        }
+//        Movie movie = new Movie();
+//        movie.setTitle(movieRequest.getTitle());
+//        movie.setDescription(movieRequest.getDescription());
+//        movie.setDirector(movieRequest.getDirector());
+//        movie.setCast(movieRequest.getCast());
+//        movie.setDuration(movieRequest.getDuration());
+//        movie.setRating(movieRequest.getRating());
+//
+//        // Lưu tên tệp ảnh vào đối tượng Movie
+//        String imageName = movieRequest.getImage().getOriginalFilename();
+//        movie.setImage(imageName);
+//        // Thực hiện lưu trữ thực tế tệp ảnh trên máy chủ
+//        MultipartFile imageFile = movieRequest.getImage();
+//        String imagePath = "http://http://localhost:8080/api/movie/image/" + imageName;
+//        fileStorageService.addImage(imageFile, movie.getId(), imageName);
+//        movie.setImage(imagePath); // Cập nhật đường dẫn của ảnh trong đối tượng Movie
+//
+//        Set<Genre> genres = new HashSet<>();
+//        for (Long id : movieRequest.getGenreIds()) {
+//            Genre genre = genreRepository.findById(id).orElse(null);
+//            genres.add(genre);
+//        }
+//        movie.setGenres(genres);
+//
+//        movieRepository.save(movie);
+//        return true;
+//    }
 
     @Override
     public boolean addMovie(MovieRequest movieRequest) {
@@ -52,6 +88,7 @@ public class MovieServiceImpl implements MovieService {
         return true;
     }
 
+
     @Override
     public List<MovieDTO> getAllMovie() {
         List<Movie> movieList = movieRepository.findAll();
@@ -60,6 +97,7 @@ public class MovieServiceImpl implements MovieService {
             movieDTO.setId(movie.getId());
             movieDTO.setTitle(movie.getTitle());
             movieDTO.setDescription(movie.getDescription());
+
             movieDTO.setImage(movie.getImage());
             movieDTO.setDirector(movie.getDirector());
             movieDTO.setCast(movie.getCast());

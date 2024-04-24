@@ -25,7 +25,7 @@ public class GenreController {
     }
 
     @PostMapping("/update")
-    public boolean updateGenre(@RequestParam(value = "id") int genreId,
+    public boolean updateGenre(@RequestParam(value = "id") Long genreId,
                                @RequestParam(value = "name") String genreName) {
         return genreService.updateGenre(genreId, genreName);
     }

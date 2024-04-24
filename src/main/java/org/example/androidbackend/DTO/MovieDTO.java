@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 public class MovieDTO {
-    private int id;
+    private Long id;
     private String title;
     private String description;
     private String image;

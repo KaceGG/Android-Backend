@@ -41,4 +41,21 @@ public class FileStorageServiceImpl implements FileStorageService {
             throw new RuntimeException("Failed to add image", e);
         }
     }
+
+//    public String addImage(MultipartFile file, Long identifier, String type) {
+//        try {
+//            Path movieDirectory = location.resolve(type);
+//            if (!Files.exists(movieDirectory)) {
+//                Files.createDirectories(movieDirectory);
+//            }
+//            Path movieFile = movieDirectory.resolve(identifier + "_" + file.getOriginalFilename());
+//            Files.copy(file.getInputStream(), movieFile, StandardCopyOption.REPLACE_EXISTING);
+//
+//            // Tạo URL đầy đủ cho ảnh và trả về
+//            String imageUrl = BASE_URL + "/api/movie/image/" + identifier + "_" + file.getOriginalFilename();
+//            return imageUrl;
+//        } catch (IOException e) {
+//            throw new RuntimeException("Failed to add image", e);
+//        }
+//    }
 }
