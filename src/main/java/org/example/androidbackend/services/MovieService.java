@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 public interface MovieService {
-    //    boolean addMovie(MovieRequest movieRequest);
+
     boolean addMovie(
             String title,
             String description,
@@ -24,6 +24,8 @@ public interface MovieService {
             float rating,
             List<Long> genreIds
     ) throws IOException;
+
+//    boolean addMovie(MovieRequest movieRequest) throws IOException;
 
     List<MovieDTO> getAllMovie();
     public MovieDTO getDetailMovie(Long id);

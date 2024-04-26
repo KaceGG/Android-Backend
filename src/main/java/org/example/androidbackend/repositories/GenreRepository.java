@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
+import java.util.List;
 
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Long> {
     boolean existsByName(String name);
 
     @Query("select g from Genre g join g.movies m where m.id = :movieId ")
-    Set<Genre> findGenresByMoviesId(@Param("movieId") Long movieId);
+    List<Genre> findGenresByMoviesId(@Param("movieId") Long movieId);
 }

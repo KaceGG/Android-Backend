@@ -31,7 +31,6 @@ public class CloudService {
         Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
                 "resource_type", "image"
         ));
-        String imageUrl = (String) uploadResult.get("url");
-        return imageUrl;
+        return (String) uploadResult.get("url");
     }
 }

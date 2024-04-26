@@ -28,14 +28,6 @@ public class MovieController {
     @Autowired
     private FileStorageService fileStorageService;
 
-    @Autowired
-    private MovieRepository movieRepository;
-
-//    @PostMapping("/add")
-//    public boolean addMovie(@RequestBody MovieRequest movieRequest) {
-//        return movieService.addMovie(movieRequest);
-//    }
-
     @PostMapping("/add")
     public boolean addMovie(@RequestParam(value = "title") String title,
                             @RequestParam(value = "description") String description,
