@@ -23,4 +23,5 @@ public interface MovieService {
     ) throws IOException;
 
     List<MovieDTO> getAllMovie();
+    public MovieDTO getDetailMovie(Long id);
 }

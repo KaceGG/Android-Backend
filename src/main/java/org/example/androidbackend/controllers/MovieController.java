@@ -61,4 +61,9 @@ public class MovieController {
     public List<Movie> getMovieToGenres(@PathVariable int genreId) {
         return movieRepository.findMoviesByGenresId(genreId);
     }
+    @GetMapping("/detail/{id}")
+    public MovieDTO getDetailMovie(@PathVariable Long id){
+        return movieService.getDetailMovie(id);
+    }
+
 }

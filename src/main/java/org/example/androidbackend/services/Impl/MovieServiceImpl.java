@@ -105,4 +105,33 @@ public class MovieServiceImpl implements MovieService {
 
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public MovieDTO getDetailMovie(Long id) {
+        Movie movie = movieRepository.findById(id).orElse(null);
+
+        if (movie == null) {
+            return null;
+        }
+        MovieDTO movieDTO = new MovieDTO();
+        movieDTO.setId(movie.getId());
+        movieDTO.setTitle(movie.getTitle());
+        movieDTO.setDescription(movie.getDescription());
+
+        movieDTO.setImage(movie.getImage());
+        movieDTO.setDirector(movie.getDirector());
+        movieDTO.setCast(movie.getCast());
+        movieDTO.setDuration(movie.getDuration());
+        movieDTO.setRating(movie.getRating());
+        Set<GenreDTO> genres = genreRepository.findGenresByMoviesId(movie.getId()).stream().map(
+                genre -> {
+                    GenreDTO genreDTO = new GenreDTO();
+                    genreDTO.setId(genre.getId());
+                    genreDTO.setName(genre.getName());
+                    return genreDTO;
+                }
+        ).collect(Collectors.toSet());
+        movieDTO.setGenres(genres);
+        return movieDTO;
+    }
 }
