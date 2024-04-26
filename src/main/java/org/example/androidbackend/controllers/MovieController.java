@@ -1,9 +1,6 @@
 package org.example.androidbackend.controllers;
 
 import org.example.androidbackend.DTO.MovieDTO;
-import org.example.androidbackend.models.Movie;
-import org.example.androidbackend.repositories.MovieRepository;
-import org.example.androidbackend.requests.MovieRequest;
 import org.example.androidbackend.services.FileStorageService;
 import org.example.androidbackend.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +22,6 @@ public class MovieController {
 
     @Autowired
     private FileStorageService fileStorageService;
-
-    @Autowired
-    private MovieRepository movieRepository;
-
-//    @PostMapping("/add")
-//    public boolean addMovie(@RequestBody MovieRequest movieRequest) {
-//        return movieService.addMovie(movieRequest);
-//    }
 
     @PostMapping("/add")
     public boolean addMovie(@RequestParam(value = "title") String title,
@@ -57,13 +46,8 @@ public class MovieController {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
     }
 
-    @GetMapping("/{genreId}")
-    public List<Movie> getMovieToGenres(@PathVariable int genreId) {
-        return movieRepository.findMoviesByGenresId(genreId);
-    }
     @GetMapping("/detail/{id}")
     public MovieDTO getDetailMovie(@PathVariable Long id){
         return movieService.getDetailMovie(id);
     }
-
 }

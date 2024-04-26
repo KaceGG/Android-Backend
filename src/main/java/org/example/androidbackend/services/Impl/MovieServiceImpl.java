@@ -6,12 +6,8 @@ import org.example.androidbackend.models.Genre;
 import org.example.androidbackend.models.Movie;
 import org.example.androidbackend.repositories.GenreRepository;
 import org.example.androidbackend.repositories.MovieRepository;
-import org.example.androidbackend.requests.MovieRequest;
 import org.example.androidbackend.services.CloudService;
-import org.example.androidbackend.services.FileStorageService;
 import org.example.androidbackend.services.MovieService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,29 +27,6 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private CloudService cloudService;
 
-    //    @Override
-//    public boolean addMovie(MovieRequest movieRequest) {
-//        if (movieRepository.existsByTitle(movieRequest.getTitle())) {
-//            return false;
-//        }
-//        Movie movie = new Movie();
-//        movie.setTitle(movieRequest.getTitle());
-//        movie.setDescription(movieRequest.getDescription());
-//        movie.setDirector(movieRequest.getDirector());
-//        movie.setCast(movieRequest.getCast());
-//        movie.setDuration(movieRequest.getDuration());
-//        movie.setRating(movieRequest.getRating());
-//
-//        Set<Genre> genres = new HashSet<>();
-//        for (Long id : movieRequest.getGenreIds()) {
-//            Genre genre = genreRepository.findById(id).orElse(null);
-//            genres.add(genre);
-//        }
-//        movie.setGenres(genres);
-//
-//        movieRepository.save(movie);
-//        return true;
-//    }
     @Override
     public boolean addMovie(String title, String description, MultipartFile image, String director, String cast, int duration, float rating, List<Long> genreIds) throws IOException {
         if (movieRepository.existsByTitle(title)) {
@@ -76,6 +49,37 @@ public class MovieServiceImpl implements MovieService {
         movieRepository.save(movie);
         return true;
     }
+
+//    @Override
+//    public boolean addMovie(MovieRequest movieRequest) throws IOException {
+//        // Kiểm tra xem bộ phim đã tồn tại chưa
+//        if (movieRepository.existsByTitle(movieRequest.getTitle())) {
+//            return false;
+//        }
+//
+//        // Tạo một đối tượng Movie từ MovieRequest
+//        Movie movie = new Movie();
+//        movie.setTitle(movieRequest.getTitle());
+//        movie.setDescription(movieRequest.getDescription());
+//        movie.setDirector(movieRequest.getDirector());
+//        movie.setCast(movieRequest.getCast());
+//        movie.setDuration(movieRequest.getDuration());
+//        movie.setRating(movieRequest.getRating());
+//        movie.setImage(cloudService.uploadImage(movieRequest.getImage()));
+//
+//        // Lấy thông tin thể loại từ danh sách genreIds và thêm vào movie
+//        Set<Genre> genres = new HashSet<>();
+//        for (Long id : movieRequest.getGenreIds()) {
+//            Genre genre = genreRepository.findById(id).orElse(null);
+//            genres.add(genre);
+//        }
+//        movie.setGenres(genres);
+//
+//        // Lưu bộ phim vào cơ sở dữ liệu
+//        movieRepository.save(movie);
+//        return true;
+//    }
+
 
     @Override
     public List<MovieDTO> getAllMovie() {

@@ -1,7 +1,6 @@
 package org.example.androidbackend.services;
 
 import org.example.androidbackend.DTO.MovieDTO;
-import org.example.androidbackend.requests.MovieRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +9,7 @@ import java.util.List;
 
 @Service
 public interface MovieService {
-    //    boolean addMovie(MovieRequest movieRequest);
+
     boolean addMovie(
             String title,
             String description,
@@ -22,6 +21,8 @@ public interface MovieService {
             List<Long> genreIds
     ) throws IOException;
 
+//    boolean addMovie(MovieRequest movieRequest) throws IOException;
+
     List<MovieDTO> getAllMovie();
-    public MovieDTO getDetailMovie(Long id);
+    MovieDTO getDetailMovie(Long id);
 }
