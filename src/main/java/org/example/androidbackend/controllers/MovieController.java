@@ -27,6 +27,8 @@ public class MovieController {
 
     @Autowired
     private FileStorageService fileStorageService;
+    @Autowired
+    private MovieRepository movieRepository;
 
     @PostMapping("/add")
     public boolean addMovie(@RequestParam(value = "title") String title,
@@ -70,9 +72,19 @@ public class MovieController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteRoomByIds(@RequestBody DeleteMovieRequest deleteMovieRequest){
+    public ResponseEntity<String> deleteMoviesByIds(@RequestBody DeleteMovieRequest deleteMovieRequest){
         try {
             movieService.deleteMovieByIds(deleteMovieRequest);
+            return new ResponseEntity<>("200", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("400", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/delete/{movieId}")
+    public ResponseEntity<String> deleteMovieById(@PathVariable Long movieId){
+        try {
+            movieRepository.deleteById(movieId);
             return new ResponseEntity<>("200", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("400", HttpStatus.INTERNAL_SERVER_ERROR);

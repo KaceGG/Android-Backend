@@ -28,17 +28,17 @@ public interface MovieService {
 //    boolean addMovie(MovieRequest movieRequest) throws IOException;
 
     List<MovieDTO> getAllMovie();
-    public MovieDTO getDetailMovie(Long id);
+    MovieDTO getDetailMovie(Long id);
 
-    public boolean saveMovieDetail(Long movieId,
-                                   String title,
-                                   String description,
-                                   MultipartFile image,
-                                   String director,
-                                   String cast,
-                                   int duration,
-                                   float rating,
-                                   List<Long> genreIds) throws IOException;
+    boolean saveMovieDetail(Long movieId,
+                            String title,
+                            String description,
+                            MultipartFile image,
+                            String director,
+                            String cast,
+                            int duration,
+                            float rating,
+                            List<Long> genreIds) throws IOException;
 
-    public void deleteMovieByIds(DeleteMovieRequest deleteMovieRequest);
+    void deleteMovieByIds(DeleteMovieRequest deleteMovieRequest);
 }

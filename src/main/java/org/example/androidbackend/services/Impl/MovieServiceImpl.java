@@ -52,37 +52,6 @@ public class MovieServiceImpl implements MovieService {
         return true;
     }
 
-//    @Override
-//    public boolean addMovie(MovieRequest movieRequest) throws IOException {
-//        // Kiểm tra xem bộ phim đã tồn tại chưa
-//        if (movieRepository.existsByTitle(movieRequest.getTitle())) {
-//            return false;
-//        }
-//
-//        // Tạo một đối tượng Movie từ MovieRequest
-//        Movie movie = new Movie();
-//        movie.setTitle(movieRequest.getTitle());
-//        movie.setDescription(movieRequest.getDescription());
-//        movie.setDirector(movieRequest.getDirector());
-//        movie.setCast(movieRequest.getCast());
-//        movie.setDuration(movieRequest.getDuration());
-//        movie.setRating(movieRequest.getRating());
-//        movie.setImage(cloudService.uploadImage(movieRequest.getImage()));
-//
-//        // Lấy thông tin thể loại từ danh sách genreIds và thêm vào movie
-//        Set<Genre> genres = new HashSet<>();
-//        for (Long id : movieRequest.getGenreIds()) {
-//            Genre genre = genreRepository.findById(id).orElse(null);
-//            genres.add(genre);
-//        }
-//        movie.setGenres(genres);
-//
-//        // Lưu bộ phim vào cơ sở dữ liệu
-//        movieRepository.save(movie);
-//        return true;
-//    }
-
-
     @Override
     public List<MovieDTO> getAllMovie() {
         List<Movie> movieList = movieRepository.findAll();
