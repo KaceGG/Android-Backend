@@ -1,8 +1,11 @@
 package org.example.androidbackend.services;
 
 import org.example.androidbackend.DTO.MovieDTO;
+import org.example.androidbackend.requests.DeleteMovieRequest;
 import org.example.androidbackend.requests.MovieRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -24,4 +27,16 @@ public interface MovieService {
 
     List<MovieDTO> getAllMovie();
     public MovieDTO getDetailMovie(Long id);
+
+    public boolean saveMovieDetail(Long movieId,
+                                   String title,
+                                   String description,
+                                   MultipartFile image,
+                                   String director,
+                                   String cast,
+                                   int duration,
+                                   float rating,
+                                   List<Long> genreIds) throws IOException;
+
+    public void deleteMovieByIds(DeleteMovieRequest deleteMovieRequest);
 }
