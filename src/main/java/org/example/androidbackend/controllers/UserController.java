@@ -4,6 +4,7 @@ import org.example.androidbackend.models.User;
 import org.example.androidbackend.repositories.UserRepository;
 import org.example.androidbackend.requests.SignInRequest;
 import org.example.androidbackend.requests.SignUpRequest;
+import org.example.androidbackend.response.AuthResponse;
 import org.example.androidbackend.services.JwtService;
 import org.example.androidbackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/signin")
-    public ResponseEntity<String> authenticateAndGetToken(@RequestBody SignInRequest signInRequest) {
+    public ResponseEntity<?> authenticateAndGetToken(@RequestBody SignInRequest signInRequest) {
         try {
             Authentication authentication = authenticationManager.
                     authenticate(new UsernamePasswordAuthenticationToken
@@ -46,8 +47,10 @@ public class UserController {
                 String token;
                 token = jwtService.generateToken
                         (signInRequest.getUsername(), user.get().getRole().name());
-                System.out.println(user.get().getRole());
-                return ResponseEntity.status(HttpStatus.OK).body(token);
+                AuthResponse authResponse = new AuthResponse();
+                authResponse.setToken(token);
+                authResponse.setRole(user.get().getRole().name());
+                return ResponseEntity.status(HttpStatus.OK).body(authResponse);
             } else {
                 throw new UsernameNotFoundException("Tài khoản hoặc mật khẩu không chính xác");
             }
