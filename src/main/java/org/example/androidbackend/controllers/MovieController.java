@@ -58,7 +58,7 @@ public class MovieController {
         return movieService.getDetailMovie(id);
     }
 
-    @PostMapping("/save")
+    @PostMapping("/update")
     public boolean saveDetailMovie(@RequestParam(value = "movieId") Long movieId,
                                     @RequestParam(value = "title") String title,
                                    @RequestParam(value = "description") String description,

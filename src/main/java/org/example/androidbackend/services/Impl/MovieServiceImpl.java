@@ -7,7 +7,6 @@ import org.example.androidbackend.models.Movie;
 import org.example.androidbackend.repositories.GenreRepository;
 import org.example.androidbackend.repositories.MovieRepository;
 import org.example.androidbackend.requests.DeleteMovieRequest;
-import org.example.androidbackend.requests.MovieRequest;
 import org.example.androidbackend.services.CloudService;
 import org.example.androidbackend.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,7 +112,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public boolean saveMovieDetail(Long movieId, String title, String description, MultipartFile image, String director, String cast, int duration, float rating, List<Long> genreIds) throws IOException {
         Movie movie = movieRepository.findById(movieId).orElse(null);
-        if (movie == null || movie.getTitle().equals(title)) {
+        if (movie == null) {
             return false;
         }
         movie.setTitle(title);
@@ -122,7 +121,9 @@ public class MovieServiceImpl implements MovieService {
         movie.setCast(cast);
         movie.setDuration(duration);
         movie.setRating(rating);
-        movie.setImage(cloudService.uploadImage(image));
+        if (!image.isEmpty()) {
+            movie.setImage(cloudService.uploadImage(image));
+        }
         Set<Genre> genres = new HashSet<>();
         for (Long id : genreIds) {
             Genre genre = genreRepository.findById(id).orElse(null);
