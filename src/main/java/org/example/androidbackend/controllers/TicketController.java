@@ -23,22 +23,23 @@ public class TicketController {
     private TicketRepository ticketRepository;
 
     @PostMapping("/booking")
-    public ResponseEntity<String> bookingTicket(@RequestParam(value = "movieId") Long id, @RequestHeader(name="Authorization") String token){
+    public ResponseEntity<String> bookingTicket(@RequestParam(value = "movieId") Long id,
+                                                @RequestHeader(name = "Authorization") String token) {
         return ticketService.addTicket(id, token);
     }
 
     @GetMapping("/detail")
-    public List<Ticket> getTicketByUser(@RequestHeader(name="Authorization") String token){
+    public List<Ticket> getTicketByUser(@RequestHeader(name = "Authorization") String token) {
         return ticketService.findTicketsByUserId(token);
     }
 
     @GetMapping("/getAll")
-    public List<Ticket> getAllTicket(){
+    public List<Ticket> getAllTicket() {
         return ticketRepository.findAll();
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteMoviesByIds(@RequestParam(value = "ticketId") Long ticketId){
+    public ResponseEntity<String> deleteMoviesByIds(@RequestParam(value = "ticketId") Long ticketId) {
         try {
             ticketRepository.deleteById(ticketId);
             return new ResponseEntity<>("200", HttpStatus.OK);
@@ -46,6 +47,4 @@ public class TicketController {
             return new ResponseEntity<>("400", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }
