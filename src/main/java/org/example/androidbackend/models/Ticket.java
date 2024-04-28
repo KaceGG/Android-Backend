@@ -1,6 +1,5 @@
 package org.example.androidbackend.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,12 +16,20 @@ public class Ticket implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.EAGER )
-    @JoinColumn(name = "seatStatus_id")
-    private SeatStatus seatStatus;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "movie_id")
+    private Movie movie;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
-    @JsonIgnore
-    private Cart cart;
+    @JoinColumn(name = "user_id")
+    private User user;
+
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "seatStatus_id")
+//    private SeatStatus seatStatus;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "cart_id")
+//    @JsonIgnore
+//    private Cart cart;
 }

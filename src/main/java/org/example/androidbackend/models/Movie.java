@@ -28,12 +28,15 @@ public class Movie implements Serializable {
     private int duration;
     private float rating;
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "movie_genre",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie", orphanRemoval = true)
-    private List<Screening> screenings = new ArrayList<>();
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ticket> tickets = new ArrayList<>();
+
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie", orphanRemoval = true)
+//    private List<Screening> screenings = new ArrayList<>();
 }

@@ -1,6 +1,6 @@
-package org.example.androidbackend.models;
-
-public enum SeatStatusE {
-    AVAILABLE,
-    OCCUPIED
-}
+//package org.example.androidbackend.models;
+//
+//public enum SeatStatusE {
+//    AVAILABLE,
+//    OCCUPIED
+//}
