@@ -1,8 +1,13 @@
 package org.example.androidbackend.services.Impl;
 
+import org.example.androidbackend.DTO.GenreDTO;
+import org.example.androidbackend.DTO.MovieDTO;
+import org.example.androidbackend.DTO.TicketDTO;
+import org.example.androidbackend.DTO.UserDTO;
 import org.example.androidbackend.models.Movie;
 import org.example.androidbackend.models.Ticket;
 import org.example.androidbackend.models.User;
+import org.example.androidbackend.repositories.GenreRepository;
 import org.example.androidbackend.repositories.MovieRepository;
 import org.example.androidbackend.repositories.TicketRepository;
 import org.example.androidbackend.repositories.UserRepository;
@@ -13,7 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +36,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private GenreRepository genreRepository;
     @Override
     public ResponseEntity<String> addTicket(Long id, String token) {
         String email = userService.Authentication(token);
@@ -57,5 +67,43 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.findAll().stream()
                 .filter(ticket -> ticket.getUser().getId() == user.getId())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TicketDTO> getAllTicket() {
+        List<Ticket> tickets = ticketRepository.findAll();
+        List<TicketDTO> ticketDTOs = new ArrayList<>();
+        for (Ticket ticket : tickets) {
+            TicketDTO ticketDTO = new TicketDTO();
+            ticketDTO.setId(ticket.getId());
+            Movie movie = ticket.getMovie();
+            MovieDTO movieDTO = new MovieDTO();
+            movieDTO.setId(movie.getId());
+            movieDTO.setTitle(movie.getTitle());
+            movieDTO.setDescription(movie.getDescription());
+
+            movieDTO.setImage(movie.getImage());
+            movieDTO.setDirector(movie.getDirector());
+            movieDTO.setCast(movie.getCast());
+            movieDTO.setDuration(movie.getDuration());
+            movieDTO.setRating(movie.getRating());
+            Set<GenreDTO> genres = genreRepository.findGenresByMoviesId(movie.getId()).stream().map(
+                    genre -> {
+                        GenreDTO genreDTO = new GenreDTO();
+                        genreDTO.setId(genre.getId());
+                        genreDTO.setName(genre.getName());
+                        return genreDTO;
+                    }
+            ).collect(Collectors.toSet());
+            movieDTO.setGenres(genres);
+            ticketDTO.setMovie(movieDTO);
+            User user = ticket.getUser();
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(user.getId());
+            userDTO.setEmail(user.getEmail());
+            ticketDTO.setUser(userDTO);
+            ticketDTOs.add(ticketDTO);
+        }
+        return ticketDTOs;
     }
 }

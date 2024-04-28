@@ -1,6 +1,7 @@
 package org.example.androidbackend.controllers;
 
 
+import org.example.androidbackend.DTO.TicketDTO;
 import org.example.androidbackend.models.Ticket;
 import org.example.androidbackend.repositories.TicketRepository;
 import org.example.androidbackend.requests.DeleteMovieRequest;
@@ -34,8 +35,8 @@ public class TicketController {
     }
 
     @GetMapping("/getAll")
-    public List<Ticket> getAllTicket() {
-        return ticketRepository.findAll();
+    public List<TicketDTO> getAllTicket() {
+        return ticketService.getAllTicket();
     }
 
     @PostMapping("/delete")
