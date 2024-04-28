@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -58,15 +59,48 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<Ticket> findTicketsByUserId(String token) {
+    public List<TicketDTO> findTicketsByUserId(String token) {
         String email = userService.Authentication(token);
         User user = userRepository.findByEmail(email).orElse(null);
         if (user == null){
             return null;
         }
-        return ticketRepository.findAll().stream()
+        List<Ticket> allTickets = ticketRepository.findAll();
+        List<Ticket> userTickets = allTickets.stream()
                 .filter(ticket -> ticket.getUser().getId() == user.getId())
-                .collect(Collectors.toList());
+                .toList();
+        List<TicketDTO> ticketDTOs = new ArrayList<>();
+        for (Ticket ticket : userTickets) {
+            TicketDTO ticketDTO = new TicketDTO();
+            ticketDTO.setId(ticket.getId());
+            Movie movie = ticket.getMovie();
+            MovieDTO movieDTO = new MovieDTO();
+            movieDTO.setId(movie.getId());
+            movieDTO.setTitle(movie.getTitle());
+            movieDTO.setDescription(movie.getDescription());
+
+            movieDTO.setImage(movie.getImage());
+            movieDTO.setDirector(movie.getDirector());
+            movieDTO.setCast(movie.getCast());
+            movieDTO.setDuration(movie.getDuration());
+            movieDTO.setRating(movie.getRating());
+            Set<GenreDTO> genres = genreRepository.findGenresByMoviesId(movie.getId()).stream().map(
+                    genre -> {
+                        GenreDTO genreDTO = new GenreDTO();
+                        genreDTO.setId(genre.getId());
+                        genreDTO.setName(genre.getName());
+                        return genreDTO;
+                    }
+            ).collect(Collectors.toSet());
+            movieDTO.setGenres(genres);
+            ticketDTO.setMovie(movieDTO);
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(user.getId());
+            userDTO.setEmail(user.getEmail());
+            ticketDTO.setUser(userDTO);
+            ticketDTOs.add(ticketDTO);
+        }
+        return ticketDTOs;
     }
 
     @Override

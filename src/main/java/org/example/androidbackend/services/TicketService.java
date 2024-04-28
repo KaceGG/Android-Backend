@@ -13,7 +13,7 @@ public interface TicketService {
 
     public ResponseEntity<String> addTicket(Long id, String token);
 
-    public List<Ticket> findTicketsByUserId(String token);
+    public List<TicketDTO> findTicketsByUserId(String token);
 
     public List<TicketDTO> getAllTicket();
 }

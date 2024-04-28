@@ -30,7 +30,7 @@ public class TicketController {
     }
 
     @GetMapping("/detail")
-    public List<Ticket> getTicketByUser(@RequestHeader(name = "Authorization") String token) {
+    public List<TicketDTO> getTicketByUser(@RequestHeader(name = "Authorization") String token) {
         return ticketService.findTicketsByUserId(token);
     }
 
