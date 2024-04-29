@@ -1,10 +1,8 @@
 package org.example.androidbackend.controllers;
 
 import org.example.androidbackend.DTO.MovieDTO;
-import org.example.androidbackend.models.Movie;
 import org.example.androidbackend.repositories.MovieRepository;
 import org.example.androidbackend.requests.DeleteMovieRequest;
-import org.example.androidbackend.requests.MovieRequest;
 import org.example.androidbackend.services.FileStorageService;
 import org.example.androidbackend.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;

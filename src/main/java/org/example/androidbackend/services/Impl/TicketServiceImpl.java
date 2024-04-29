@@ -40,15 +40,16 @@ public class TicketServiceImpl implements TicketService {
 
     @Autowired
     private GenreRepository genreRepository;
+
     @Override
     public ResponseEntity<String> addTicket(Long id, String token) {
         String email = userService.Authentication(token);
         User user = userRepository.findByEmail(email).orElse(null);
-        if (user == null){
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User does not exits");
         }
         Movie movie = movieRepository.findById(id).orElse(null);
-        if(movie == null){
+        if (movie == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie does not exits");
         }
         Ticket ticket = new Ticket();
@@ -62,7 +63,7 @@ public class TicketServiceImpl implements TicketService {
     public List<TicketDTO> findTicketsByUserId(String token) {
         String email = userService.Authentication(token);
         User user = userRepository.findByEmail(email).orElse(null);
-        if (user == null){
+        if (user == null) {
             return null;
         }
         List<Ticket> allTickets = ticketRepository.findAll();

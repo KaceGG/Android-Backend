@@ -11,9 +11,9 @@ import java.util.List;
 @Service
 public interface TicketService {
 
-    public ResponseEntity<String> addTicket(Long id, String token);
+    ResponseEntity<String> addTicket(Long id, String token);
 
-    public List<TicketDTO> findTicketsByUserId(String token);
+    List<TicketDTO> findTicketsByUserId(String token);
 
-    public List<TicketDTO> getAllTicket();
+    List<TicketDTO> getAllTicket();
 }
