@@ -40,7 +40,7 @@ public class TicketController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteMoviesByIds(@RequestParam(value = "ticketId") Long ticketId) {
+    public ResponseEntity<String> deleteTicketById(@RequestParam(value = "ticketId") Long ticketId) {
         try {
             ticketRepository.deleteById(ticketId);
             return new ResponseEntity<>("200", HttpStatus.OK);
